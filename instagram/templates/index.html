@@ -1,0 +1,81 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block content %}
+{{ block.super }}
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card mb-7">
+        {% for image in posts %}
+                <div class="card-header">
+                    By: {{image.author}}
+                    <img src="{{image.author.profile.image.url}}" alt="">
+                </div>
+                <img src="{{image.image.url}}" class="mt-0" data-toggle="modal" data-target="#image{{image.id}}" id="Image1" class="mt-5" width="100%" alt="{{image.image_name}}">
+        <!-- Modal -->
+        <div class="modal fade" id="image{{image.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModal3Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <h3 class="modal-title text-center" id="exampleModal3Label">{{image.image_name}}</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                <div class="modal-header">
+                <img src="{{image.image.url}}" class="mt-0" data-toggle="modal" data-target="#image{{image.id}}" id="Image1" class="mt-5" width="100%" alt="{{image.image_name}}">
+                </div>
+         <div class="modal-body">
+             <h3>Posted {{image.post_date|timesince}} ago</h3>
+            <i class="fa fa-heart" style="color:blue; font-size:44px;">
+                {{image.image_likes}} likes
+            </i>
+            <p class="text-muted">
+              Caption: ~{{image.image_caption}}~
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+                <form action="{%url 'index' %}" class="form-group container" method="post" class="mt-3 ">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="hidden" value="{{image.pk}}" name="image_id">
+                    <button class="btn btn-sm btn-primary"> post </button>
+                </form>
+                <hr>
+                <strong class="container">Comments:</strong><br>
+                {% for comment in comments%}
+                {% if image.pk == comment.image.pk %}
+                    <p class="container">{{comment.comment}}</p>
+                {% endif %}
+                {% endfor %}
+            {% empty %}
+                <p>There are no images yet</p>
+        {% endfor %}
+        </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4 d-inline-block">
+            <a href="{% url 'profile'%}">
+                <p class="mt-4">@{{user.username}}</p>
+                <img  src="{{ user.profile.profile_image.url}}" height="100px" width="100px" class="rounded-circle" alt="profile photo">
+            </a>
+            <h3>Your suggestions</h3>
+           {% for user in users%}
+           {% if current_user.username == user.username %}
+           <p style="display:none;">{{user.username}}</p>
+           {% else %}
+           <div class="form-inline">
+           <h4>{{user.username}}</h4>
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<img src="{{ user.profile.profile_image.url}}" height="100px" width="100px" class="mt-6 rounded-circle" alt="">
+           &nbsp;&nbsp;&nbsp;
+               <button class="btn btn-sm">Follow</button>
+           {% endif %}
+           {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
