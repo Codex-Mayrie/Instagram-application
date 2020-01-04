@@ -77,5 +77,21 @@ class Image(models.Model):
   def get_profile_images(cls, profile):
     user_images = Image.objects.filter(profile__id=profile)
     return user_images
+  
+class Comment(models.Model):
+  comment = models.CharField(max_length=400)
+  date = models.DateTimeField(auto_now_add=True)
+  total_comments = models.IntegerField(default=0)
+  author = models.ForeignKey(User,on_delete=models.CASCADE,default='1')
+  image = models.ForeignKey(Image, on_delete=models.CASCADE, default='picture_folder/chipeenss.jpg')
+  
+  def __str__(self):
+    return f'{self.username}'
+  
+  class Meta:
+    ordering = ['-date']
     
-    
+  @classmethod
+  def get_all_comments(cls):
+    comments = Comment.objects.all()
+    return comments
