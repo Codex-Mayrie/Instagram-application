@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    {% if images %}
+    {% for image in images %}
+    <p>What you searched for {{message}}</p>
+    <img src="{{image.image.url}}" alt="images">
+    {% endfor %}
+    {% else %}
+    <p>Cannot find any user by that name </p>
+    {% endif %}
+</div>
+{% endblock content %}
