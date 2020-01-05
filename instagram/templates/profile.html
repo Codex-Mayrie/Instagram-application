@@ -1,0 +1,54 @@
+{%extends 'base.html'%}
+{% load staticfiles %}
+{% block content %}
+{{ block.super }}
+{% load crispy_forms_tags %}
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-3">
+            <h3>@{{user.username}}<br>
+            Bio: <br>
+                {{user.profile.bio}}
+            </h3>
+<button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+  Edit your Profile
+</button>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">{{user.username}}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" id="form" method="post" enctype="multipart/form-data" class="form-control">
+                {% csrf_token %}
+                {{user_form|crispy}}
+                {{profile_form|crispy}}
+                <button type="submit" class="btn btn-sm btn-primary">Update your profile</button>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
+        <div class="col-md-3">
+            <img src="{{ user.profile.profile_image.url}}" height="190px" width="190px" class="rounded-circle" alt="profile photo">
+        </div>
+    </div>
+    <hr>
+</div>
+    <div class="cardy container-fluid">
+        {% for picture in pictures %}
+        {% if picture.author == user %}
+        <div class="card">
+            <img src="{{picture.image.url}}" height="275vh" width="100%">
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

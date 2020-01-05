@@ -16,52 +16,52 @@ def registration(request):
     form = RegisterForm()
     return render(request, 'registration/sign-up.html', {"form": form})
 
-# @login_required(login_url='/login')
-# def index(request):
-#     title = 'instagram-clone'
-#     posts = Image.get_images()
-#     comments = Comment.get_all_comments()
-#     users = User.objects.all()
-#     current_user = request.user
-#     if request.method == 'POST':
-#         form = CommentForm(request.POST)
-#         img_id = request.POST['image_id']
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.author = current_user
-#             image = Image.get_image(img_id)
-#             comment.image = image
-#             comment.save()
-#         return redirect(f'/#{img_id}', )
-#     else:
-#         form = CommentForm(auto_id=False)
+@login_required(login_url='/login')
+def index(request):
+    title = 'instagram-clone'
+    posts = Image.get_images()
+    comments = Comment.get_all_comments()
+    users = User.objects.all()
+    current_user = request.user
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        img_id = request.POST['image_id']
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = current_user
+            image = Image.get_image(img_id)
+            comment.image = image
+            comment.save()
+        return redirect(f'/#{img_id}', )
+    else:
+        form = CommentForm(auto_id=False)
 
-#     param = {
-#         "title": title,
-#         "posts": posts,
-#         "form": form,
-#         "comments": comments,
-#         "users": users
-#     }
-#     return render(request, 'index.html', param)
+    param = {
+        "title": title,
+        "posts": posts,
+        "form": form,
+        "comments": comments,
+        "users": users
+    }
+    return render(request, 'index.html', param)
 
-# @login_required(login_url='/login')
-# def profile(request):
-#     pics = Image.get_images()
-#     if request.method == 'POST':
-#         u_form = EditProfileForm(request.POST, instance=request.user)
-#         p_form = ProfileUpdateForm(request.POST,
-#                                    request.FILES,
-#                                    instance=request.user.profile)
-#         if u_form.is_valid() and p_form.is_valid():
-#             u_form.save()
-#             p_form.save()
-#             messages.success(request, f'You have successfully updated your profile!')
-#             return redirect('/profile')
-#     else:
-#         u_form = EditProfileForm(instance=request.user)
-#         p_form = ProfileUpdateForm(request.POST,
-#                                    request.FILES,
-#                                    instance=request.user.profile)
-#     return render(request, 'profile.html', {"u_form": u_form, "p_form": p_form, "pics": pics})
+@login_required(login_url='/login')
+def profile(request):
+    pictures = Image.get_images()
+    if request.method == 'POST':
+        user_form = EditProfileForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, f'You have successfully updated your profile!')
+            return redirect('/profile')
+    else:
+        user_form = EditProfileForm(instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+    return render(request, 'profile.html', {"user_form": user_form, "profile_form": profile_form, "pictures": pictures})
 
