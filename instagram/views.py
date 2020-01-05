@@ -78,4 +78,24 @@ def post_picture(request):
     else:
         form = PostPictureForm(auto_id=False)
     return render(request, 'new_picture.html', {"form": form})
+  
+  def search_by_username(request):
+    if 'author' in request.GET and request.GET['author']:
+        search_term = request.GET['author']
+        searched_images = Image.get_author(search_term)
+        message = f'{search_term}'
+        user = User.objects.all()
+        param = {
+            "user": user,
+            "images": searched_images,
+            "message": message
+        }
+        return render(request, 'search.html', param)
+    else:
+        message = "search for a user"
+        param = {
+            "message": message
+        }
+        return render(request, 'search.html', param)
+
 
