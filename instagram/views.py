@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
-from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from .forms import *
 
 # Create your views here.
 def registration(request):
@@ -18,7 +18,7 @@ def registration(request):
 
 @login_required(login_url='/login')
 def index(request):
-    title = 'instagram-clone'
+    title = 'instagram-app'
     posts = Image.get_images()
     comments = Comment.get_all_comments()
     users = User.objects.all()
@@ -29,10 +29,10 @@ def index(request):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = current_user
-            image = Image.get_image(img_id)
+            image = Image.get_image(image_id)
             comment.image = image
             comment.save()
-        return redirect(f'/#{img_id}', )
+        return redirect(f'/#{image45_id}', )
     else:
         form = CommentForm(auto_id=False)
 
@@ -64,4 +64,18 @@ def profile(request):
                                    request.FILES,
                                    instance=request.user.profile)
     return render(request, 'profile.html', {"user_form": user_form, "profile_form": profile_form, "pictures": pictures})
+  
+  @login_required(login_url='/login')
+def post_picture(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = PostPictureForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save(commit=False)
+            image.author = current_user
+            image.save()
+        return redirect('/')
+    else:
+        form = PostPictureForm(auto_id=False)
+    return render(request, 'new_picture.html', {"form": form})
 
