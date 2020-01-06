@@ -9,9 +9,9 @@ from .forms import *
 def registration(request):
   if request.method == 'POST':
     form = RegistrationForm(request.POST)
-  if form.is_valid():
-    form.save()
-    return redirect('/login')
+    if form.is_valid():
+      form.save()
+      return redirect('/login')
   else:
     form = RegisterForm()
     return render(request, 'registration/sign-up.html', {"form": form})
@@ -25,7 +25,7 @@ def index(request):
     current_user = request.user
     if request.method == 'POST':
         form = CommentForm(request.POST)
-        img_id = request.POST['image_id']
+        image_id = request.POST['image_id']
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = current_user
@@ -49,23 +49,19 @@ def index(request):
 def profile(request):
     pictures = Image.get_images()
     if request.method == 'POST':
-        user_form = EditProfileForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST,
-                                   request.FILES,
-                                   instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
+      user_form = EditProfileForm(request.POST, instance=request.user)
+      profile_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
+    if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             messages.success(request, f'You have successfully updated your profile!')
             return redirect('/profile')
     else:
         user_form = EditProfileForm(instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST,
-                                   request.FILES,
-                                   instance=request.user.profile)
-    return render(request, 'profile.html', {"user_form": user_form, "profile_form": profile_form, "pictures": pictures})
+        profile_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
+        return render(request, 'profile.html', {"user_form": user_form, "profile_form": profile_form, "pictures": pictures})
   
-  @login_required(login_url='/login')
+@login_required(login_url='/login')
 def post_picture(request):
     current_user = request.user
     if request.method == 'POST':
@@ -79,23 +75,23 @@ def post_picture(request):
         form = PostPictureForm(auto_id=False)
     return render(request, 'new_picture.html', {"form": form})
   
-  def search_by_username(request):
-    if 'author' in request.GET and request.GET['author']:
-        search_term = request.GET['author']
-        searched_images = Image.get_author(search_term)
-        message = f'{search_term}'
-        user = User.objects.all()
-        param = {
-            "user": user,
-            "images": searched_images,
-            "message": message
+def search_by_username(request):
+  if 'author' in request.GET and request.GET['author']:
+    search_term = request.GET['author']
+    searched_images = Image.get_author(search_term)
+    message = f'{search_term}'
+    user = User.objects.all()
+    param = {
+      "user": user,
+      "images": searched_images,
+      "message": message
         }
-        return render(request, 'search.html', param)
-    else:
-        message = "search for a user"
-        param = {
+    return render(request, 'search.html', param)
+  else:
+      message = "search for a user"
+      param = {
             "message": message
-        }
-        return render(request, 'search.html', param)
+      }
+      return render(request, 'search.html', param)
 
 
