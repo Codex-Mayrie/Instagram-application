@@ -1,0 +1,32 @@
+<div class="col-md-2"></div>
+    <div class="col-md-3 d-inline-block">
+    <a href="{% url 'profile'%}">
+        <p class="mt-4">@{{user.username}}</p>
+        <img
+        src="{{ user.profile.profile_image.url}}"
+        height="100px"
+        width="100px"
+        class="rounded-circle"
+        alt="profile photo"
+        />
+    </a>
+    <h3>Your suggestions</h3>
+    {% for user in users%} {% if current_user.username == user.username %}
+    <p style="display:none;">{{user.username}}</p>
+    {% else %}
+    <div class="form-inline">
+        <h4>{{user.username}}</h4>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <img
+        src="{{ user.profile.profile_image.url}}"
+        height="100px"
+        width="100px"
+        class="mt-6 rounded-circle"
+        alt=""
+        />
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-sm">Follow</button>
+        {% endif %} {% endfor %}
+    </div>
+    </div>

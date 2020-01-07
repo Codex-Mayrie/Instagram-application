@@ -36,7 +36,7 @@
 </div>
         </div>
         <div class="col-md-3">
-            <img src="{{ user.profile.profile_image.url}}" height="190px" width="190px" class="rounded-circle" alt="profile photo">
+            <img src="{{ user.profile.profile_image.url}}" height="200px" width="200px" class="rounded-circle" alt="profile photo">
         </div>
     </div>
     <hr>
@@ -45,7 +45,7 @@
         {% for picture in pictures %}
         {% if picture.author == user %}
         <div class="card">
-            <img src="{{picture.image.url}}" height="275vh" width="100%">
+            <img src="{{picture.image.url}}" height="300vh" width="100%">
         </div>
         {% endif %}
         {% endfor %}

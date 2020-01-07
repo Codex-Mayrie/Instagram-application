@@ -5,11 +5,11 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import *
 
 class RegisterForm(UserCreationForm):
-   email = forms.EmailField(label='Email')
+  email = forms.EmailField(label='Email')
   
-   class Meta:
-     model = User
-     fields = ["email", "username", "password", "password2"]
+  class Meta:
+    model = User
+    fields = ["email", "username", "password", "password2"]
 
 class ProfileForm(forms.ModelForm):
   class Meta:

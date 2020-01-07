@@ -7,8 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Profile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
-  profile_image = models.ImageField(upload_to='profile_photo/', blank=True, default='profile_photo/shee_love.jpg')
-  bio = models.CharField(max_length=50, blank=True)
+  profile_image = models.ImageField(upload_to='profile_photo/')
+  bio = models.TextField(max_length=255)
   
   def __str__(self):
     return f'{self.user.username} Profile'
