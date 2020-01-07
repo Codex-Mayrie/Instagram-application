@@ -11,19 +11,34 @@ class Profile(models.Model):
   bio = models.TextField(max_length=255)
   
   def __str__(self):
+    """
+    method that returns the profile
+    """
     return f'{self.user.username} Profile'
   
   def save_profile(self):
+    """
+    A method that saves the profile
+    """
     self.save()
     
   def update_profile(self):
+    """
+    A method that updates the profile
+    """
     self.update_profile()
     
   def delete_profile(self):
+    """
+    A method that deletes the profile
+    """
     self.delete_profile()
     
 @classmethod
 def get_by_id(cls, id):
+  """
+  A method that gets the user image by id
+  """
   user_images = Profile.objects.filter(user=id).first()
   return user_images
 
