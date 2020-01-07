@@ -4,9 +4,9 @@
 {{ block.super }}
 {% load crispy_forms_tags %}
 
-<div class="container mt-3">
+<div class="container mt-4">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <h3>@{{user.username}}<br>
             Bio: <br>
                 {{user.profile.bio}}
@@ -35,9 +35,10 @@
   </div>
 </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <img src="{{ user.profile.profile_image.url}}" height="200px" width="200px" class="rounded-circle" alt="profile photo">
         </div>
+        <div class="col-md-4"></div>
     </div>
     <hr>
 </div>

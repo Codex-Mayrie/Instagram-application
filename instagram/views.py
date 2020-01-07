@@ -14,7 +14,7 @@ def registration(request):
       return redirect('/login')
   else:
     form = RegisterForm()
-    return render(request, 'registration/sign-up.html', {"form": form})
+  return render(request, 'registration/sign-up.html', {"form": form})
 
 @login_required(login_url='/login')
 def index(request):
@@ -60,6 +60,8 @@ def profile(request):
       user_form = EditProfileForm(instance=request.user)
       profile_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
       return render(request, 'profile.html', {"user_form": user_form, "profile_form": profile_form, "pictures": pictures})
+  
+  return render(request, 'profile.html', {"pictures": pictures})
     
 @login_required(login_url='/login')
 def post_picture(request):
