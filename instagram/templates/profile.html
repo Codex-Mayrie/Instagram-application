@@ -42,14 +42,17 @@
     </div>
     <hr>
 </div>
-    <div class="cardy container-fluid">
-        {% for picture in pictures %}
-        {% if picture.author == user %}
-        <div class="card">
-            <img src="{{picture.image.url}}" height="300vh" width="100%">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-7">
+          {% for picture in pictures %}
+          {% if picture.author == user %}
+          <div class="card">
+              <img src="{{picture.image.url}}" height="auto" width="100%">
+          </div>
+          {% endif %}
+          {% endfor %}
         </div>
-        {% endif %}
-        {% endfor %}
+      </div>        
     </div>
-</div>
 {% endblock content %}
