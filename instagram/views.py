@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -55,13 +55,12 @@ def profile(request):
       user_form.save()
       profile_form.save()
       messages.success(request, f'You have successfully updated your profile!')
-      return redirect('/profile')
+      return HttpResponseRedirect(request.path_info)
     else:
       user_form = EditProfileForm(instance=request.user)
       profile_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
       return render(request, 'profile.html', {"user_form": user_form, "profile_form": profile_form, "pictures": pictures})
-  
-  
+    
 @login_required(login_url='/login')
 def post_picture(request):
     current_user = request.user
